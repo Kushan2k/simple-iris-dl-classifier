@@ -3,6 +3,7 @@ from zenml import step
 from sklearn.datasets import load_iris
 
 
+
 @step
 def data_loader(data_set_path:str=None)->pd.DataFrame:
     """
@@ -17,8 +18,11 @@ def data_loader(data_set_path:str=None)->pd.DataFrame:
     """
     
     if data_set_path !=None:
-        data,target=load_iris(return_X_y=True,as_frame=True)
+        (data, target) = load_iris(return_X_y=True, as_frame=True) # type: ignore
         data['target'] = target
+
+        data.dropna(inplace=True)
+        data.drop_duplicates(inplace=True)
         
         return data
     else:
