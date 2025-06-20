@@ -3,6 +3,7 @@ from typing_extensions import Annotated
 from sklearn.model_selection import train_test_split
 from zenml import step
 import pandas as pd
+from pandas import DataFrame, Series
 
 
 @step
@@ -25,7 +26,23 @@ def data_splitter(
         random_state (int): Controls the shuffling applied to the data before applying the split.
 
     Returns:
-        tuple[pd.DataFrame, pd.DataFrame,pd.Series,pd.Series]: Training and testing datasets.
+        Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+            - x_train: Training features.
+            - x_test: Testing features.
+            - y_train: Training labels.
+            - y_test: Testing labels.
+
+    
     """
-    x_train,x_test,y_train,y_test=train_test_split(data, test_size=test_size, random_state=random_state)
+    x_train: pd.DataFrame
+    x_test: pd.DataFrame
+    y_train: pd.Series
+    y_test: pd.Series
+
+    x_train, x_test, y_train, y_test = train_test_split(
+        data.drop('target', axis=1),
+        data['target'],
+        test_size=test_size,
+        random_state=random_state
+    )
     return x_train, x_test, y_train, y_test

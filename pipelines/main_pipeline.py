@@ -1,5 +1,10 @@
 
+from typing import List
+import pandas as pd
+import tensorflow as tf
 from zenml import pipeline
+
+from steps.model_trainer import train_model
 
 
 @pipeline(enable_cache=True)
@@ -16,10 +21,16 @@ def main_pipeline(data_set_path: str = None):
 
     # Load the data
     data = data_loader(data_set_path=data_set_path)
-    data_visualizer(data=data, target_column='target')
+    # data_visualizer(data=data, target_column='target')
+    x_train: pd.DataFrame
+    x_test: pd.DataFrame
+    y_train: pd.Series
+    y_test: pd.Series
     x_train,x_test,y_train,y_test=data_splitter(data, test_size=0.2, random_state=42)
 
-    print(type(x_train), type(x_test), type(y_train), type(y_test))
+    x_tensor= tf.data.Dataset.from_tensor_slices(x_train)
+    y_tensor= tf.data.Dataset.from_tensor_slices(y_train)
+    train_model(x_train=x_tensor, y_train=y_tensor)
     
 
     return data
