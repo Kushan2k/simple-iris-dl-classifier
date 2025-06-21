@@ -50,7 +50,7 @@ class SequentialModel(Model):
 def train_model(
     x_train: pd.DataFrame,
     y_train: pd.Series,
-) -> None:
+) -> tf.keras.Model:
     """
     Train the model on the training data.
 
@@ -62,7 +62,19 @@ def train_model(
     Returns:
         Model: The trained model.
     """
-    print('shape ',x_train.shape)
+
+
+    model=SequentialModel().train(
+        x_train=x_train,
+        y_train=y_train,
+        epochs=10,
+        batch_size=32,
+        input_shape=(x_train.shape[1],),
+        num_classes=len(y_train.unique())
+    )
+    
+
+    return model
     # tensor=x_train.__tf_tensor__()
 
     # print('shape ',tensor.shape)
