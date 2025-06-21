@@ -28,9 +28,7 @@ def main_pipeline(data_set_path: str = None):
     y_test: pd.Series
     x_train,x_test,y_train,y_test=data_splitter(data, test_size=0.2, random_state=42)
 
-    x_tensor= tf.data.Dataset.from_tensor_slices(x_train)
-    y_tensor= tf.data.Dataset.from_tensor_slices(y_train)
-    train_model(x_train=x_tensor, y_train=y_tensor)
+    train_model(x_train ,y_train)
     
 
     return data

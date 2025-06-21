@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from zenml import step
 from tensorflow.keras import Sequential,layers
 import tensorflow as tf
+import pandas as pd
 
 
 
@@ -47,8 +48,8 @@ class SequentialModel(Model):
 
 @step
 def train_model(
-    x_train: tf.Tensor,
-    y_train: tf.Tensor,
+    x_train: pd.DataFrame,
+    y_train: pd.Series,
 ) -> None:
     """
     Train the model on the training data.
