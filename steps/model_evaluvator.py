@@ -19,20 +19,16 @@ def evaluate_model(model: tf.keras.Model, x_test: pd.DataFrame, y_test: pd.Serie
     """
     try:
         # Make predictions
-        y_pred = model.evaluate(x_test,y_test)
-        y_pred_classes = tf.argmax(y_pred, axis=1).numpy()
-
+        evaluvate = model.evaluate(x_test,y_test)
+        
+        y_pred = model.predict(x_test)
         # Calculate evaluation metrics
-        accuracy = accuracy_score(y_test, y_pred_classes)
-        precision = precision_score(y_test, y_pred_classes, average='weighted')
-        recall = recall_score(y_test, y_pred_classes, average='weighted')
-        f1 = f1_score(y_test, y_pred_classes, average='weighted')
+        accuracy = accuracy_score(y_test, y_pred)
+        
 
         return {
             'accuracy': accuracy,
-            'precision': precision,
-            'recall': recall,
-            'f1_score': f1
+            
         }
     except Exception as e:
         print(f"An error occurred during model evaluation: {e}")
